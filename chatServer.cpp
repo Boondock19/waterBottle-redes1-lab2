@@ -33,24 +33,7 @@ int main(int argc, char *argv[])
         perror("socket");
         exit(1);
     }
-    // Separar entrada del cliente para poder crear las Botellas
-    // char str1Splited [10];
-    // char str2Splited [10];
-    // char * pch;
-    // pch = strtok (str1," ");
-    // int i = 0;
-    // while (pch != NULL)
-    // {
-    //     if(i == 0){
-    //         strcpy(str1Splited, pch);
-    //     }else{
-    //         strcpy(str2Splited, pch);
-    //     }
-    //     pch = strtok (NULL, " ");
-    //     i++;
-    // }
-    // printf("Primera capacidad %d \n", atoi(str1Splited ));
-    // printf("Segunda capacidad %d \n", atoi(str2Splited ));
+  
     /* Se establece la estructura my_addr para luego llamar a bind() */
     my_addr.sin_family = AF_INET; /* usa host byte order */
     my_addr.sin_port = htons(SERVER_PORT); /* usa network byte order */
@@ -120,6 +103,27 @@ int main(int argc, char *argv[])
     // {
     //     cout << "Test failed" << endl;
     // }
+
+    // Separar entrada del cliente para poder crear las Botellas
+    char str1Splited [10];
+    char str2Splited [10];
+    char cpyBuf [1024];
+    char * pch;
+    strcpy(cpyBuf, buf);
+    pch = strtok (cpyBuf," ");
+    int i = 0;
+    while (pch != NULL)
+    {
+        if(i == 0){
+            strcpy(str1Splited, pch);
+        }else{
+            strcpy(str2Splited, pch);
+        }
+        pch = strtok (NULL, " ");
+        i++;
+    }
+    printf("Primera capacidad %d \n", atoi(str1Splited ));
+    printf("Segunda capacidad %d \n", atoi(str2Splited ));
 
     /* Se visualiza lo recibido */
     printf("paquete proveniente de : %s\n",inet_ntoa(their_addr.sin_addr));

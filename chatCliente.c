@@ -22,6 +22,8 @@ int main(int argc, char *argv[])
     struct sockaddr_in their_addr; /* almacenara la direccion IP y numero de puerto del servidor */
     struct hostent *he; /* para obtener nombre del host */
     int numbytes; /* conteo de bytes a escribir */
+    char str1 [10]; /* Variable para enviar al servidor*/
+    char str2 [10]; /* variable para tomar el segundo argumento de las botellas */
     if (argc != 4) {
     fprintf(stderr,"\nuso: %s cliente hostname capacidadPrimeraBotella capacidadSegundaBotella\n", argv[0]);
     exit(1);
@@ -32,8 +34,7 @@ int main(int argc, char *argv[])
     exit(1);
     }
     // logica para poder procesar los argumentos de las botellas para enviarlo al servidor
-    char str1 [10];
-    char str2 [10];
+   
     strcpy(str1, argv[2]);
     strcpy(str2, argv[3]);
     size_t lengthOfFirstCapacity = strlen(str1);
@@ -53,7 +54,7 @@ int main(int argc, char *argv[])
     their_addr.sin_addr = *((struct in_addr *)he->h_addr);
     bzero(&(their_addr.sin_zero), 8); /* pone en cero el resto */
     /* enviamos el mensaje */
-    if ((numbytes=sendto(sockfd,argv[2],strlen(argv[2]),0,(struct sockaddr *)&their_addr,
+    if ((numbytes=sendto(sockfd,str1,strlen(str1),0,(struct sockaddr *)&their_addr,
     sizeof(struct sockaddr))) == -1) {
     perror("sendto");
     exit(2);
