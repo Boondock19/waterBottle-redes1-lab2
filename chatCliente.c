@@ -22,8 +22,8 @@ int main(int argc, char *argv[])
     struct sockaddr_in their_addr; /* almacenara la direccion IP y numero de puerto del servidor */
     struct hostent *he; /* para obtener nombre del host */
     int numbytes; /* conteo de bytes a escribir */
-    if (argc != 3) {
-    fprintf(stderr,"\nuso: %s cliente hostname mensaje\n", argv[0]);
+    if (argc != 4) {
+    fprintf(stderr,"\nuso: %s cliente hostname capacidadPrimeraBotella capacidadSegundaBotella\n", argv[0]);
     exit(1);
     }
     /* convertimos el hostname a su direccion IP */
@@ -31,6 +31,17 @@ int main(int argc, char *argv[])
     perror("gethostbyname");
     exit(1);
     }
+    // logica para poder procesar los argumentos de las botellas para enviarlo al servidor
+    char str1 [10];
+    char str2 [10];
+    strcpy(str1, argv[2]);
+    strcpy(str2, argv[3]);
+    size_t lengthOfFirstCapacity = strlen(str1);
+    str1[lengthOfFirstCapacity] = ' '; // overwrite null termination
+    str1[lengthOfFirstCapacity+1] = '\0'; // add a new null termination
+    strcat(str1, str2);
+    printf("Resultado de unir ambas capacidades %s \n", str1 );
+  
     /* Creamos el socket */
     if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) == -1) {
     perror("socket");

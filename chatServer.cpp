@@ -33,6 +33,24 @@ int main(int argc, char *argv[])
         perror("socket");
         exit(1);
     }
+    // Separar entrada del cliente para poder crear las Botellas
+    // char str1Splited [10];
+    // char str2Splited [10];
+    // char * pch;
+    // pch = strtok (str1," ");
+    // int i = 0;
+    // while (pch != NULL)
+    // {
+    //     if(i == 0){
+    //         strcpy(str1Splited, pch);
+    //     }else{
+    //         strcpy(str2Splited, pch);
+    //     }
+    //     pch = strtok (NULL, " ");
+    //     i++;
+    // }
+    // printf("Primera capacidad %d \n", atoi(str1Splited ));
+    // printf("Segunda capacidad %d \n", atoi(str2Splited ));
     /* Se establece la estructura my_addr para luego llamar a bind() */
     my_addr.sin_family = AF_INET; /* usa host byte order */
     my_addr.sin_port = htons(SERVER_PORT); /* usa network byte order */
@@ -53,55 +71,55 @@ int main(int argc, char *argv[])
         exit(3);
     }
 
-    cout << "Test de las propiedades de esta clase de WaterBottle" << endl;
-    cout << "Inicializacion de las botellas de agua:" << endl;
-    WaterBottle bottle1(5);
-    WaterBottle bottle2(3);
+    // cout << "Test de las propiedades de esta clase de WaterBottle" << endl;
+    // cout << "Inicializacion de las botellas de agua:" << endl;
+    // WaterBottle bottle1(5);
+    // WaterBottle bottle2(3);
 
-    cout << "Capacidad de la botella 1: " << bottle1.getCapacity() << endl;
-    cout << "Capacidad de la botella 2: " << bottle2.getCapacity() << endl;
+    // cout << "Capacidad de la botella 1: " << bottle1.getCapacity() << endl;
+    // cout << "Capacidad de la botella 2: " << bottle2.getCapacity() << endl;
 
-    cout << "Vamos a llenar la primera botella para vaciarlo sobre la segunda" << endl;
+    // cout << "Vamos a llenar la primera botella para vaciarlo sobre la segunda" << endl;
 
-    bottle1.fill();
-    cout << "Valor actual de la botella 1: " << bottle1.getCurrentValue() << endl;
-    cout << "Valor actual de la botella 2: " << bottle2.getCurrentValue() << endl;
+    // bottle1.fill();
+    // cout << "Valor actual de la botella 1: " << bottle1.getCurrentValue() << endl;
+    // cout << "Valor actual de la botella 2: " << bottle2.getCurrentValue() << endl;
 
-    cout << "Transvasar de la botella 1 a la botella 2:  Primera vez" << endl;
-    fillOtherBottle(bottle1, bottle2);
+    // cout << "Transvasar de la botella 1 a la botella 2:  Primera vez" << endl;
+    // fillOtherBottle(bottle1, bottle2);
 
-    cout << "Valor actual de la botella 1: " << bottle1.getCurrentValue() << endl;
-    cout << "Valor actual de la botella 2: " << bottle2.getCurrentValue() << endl;
+    // cout << "Valor actual de la botella 1: " << bottle1.getCurrentValue() << endl;
+    // cout << "Valor actual de la botella 2: " << bottle2.getCurrentValue() << endl;
 
-    bottle2.empty();
-    cout << "Vaciamos la botella 2: Primera vez" << endl;
-    cout << "Valor actual de la botella 1: " << bottle1.getCurrentValue() << endl;
-    cout << "Valor actual de la botella 2: " << bottle2.getCurrentValue() << endl;
+    // bottle2.empty();
+    // cout << "Vaciamos la botella 2: Primera vez" << endl;
+    // cout << "Valor actual de la botella 1: " << bottle1.getCurrentValue() << endl;
+    // cout << "Valor actual de la botella 2: " << bottle2.getCurrentValue() << endl;
 
-    cout << "Transvasar de la botella 1 a la botella 2: Segunda vez" << endl;
-    fillOtherBottle(bottle1, bottle2);
-    cout << "Valor actual de la botella 1: " << bottle1.getCurrentValue() << endl;
-    cout << "Valor actual de la botella 2: " << bottle2.getCurrentValue() << endl;
+    // cout << "Transvasar de la botella 1 a la botella 2: Segunda vez" << endl;
+    // fillOtherBottle(bottle1, bottle2);
+    // cout << "Valor actual de la botella 1: " << bottle1.getCurrentValue() << endl;
+    // cout << "Valor actual de la botella 2: " << bottle2.getCurrentValue() << endl;
 
-    cout << "Llenamos la botella 1: Segunda vez" << endl;
-    bottle1.fill();
-    cout << "Valor actual de la botella 1: " << bottle1.getCurrentValue() << endl;
-    cout << "Valor actual de la botella 2: " << bottle2.getCurrentValue() << endl;
+    // cout << "Llenamos la botella 1: Segunda vez" << endl;
+    // bottle1.fill();
+    // cout << "Valor actual de la botella 1: " << bottle1.getCurrentValue() << endl;
+    // cout << "Valor actual de la botella 2: " << bottle2.getCurrentValue() << endl;
 
-    cout << "Transvasar de la botella 1 a la botella 2: Tercera vez" << endl;
-    fillOtherBottle(bottle1, bottle2);
+    // cout << "Transvasar de la botella 1 a la botella 2: Tercera vez" << endl;
+    // fillOtherBottle(bottle1, bottle2);
 
-    cout << "Valor actual de la botella 1: " << bottle1.getCurrentValue() << endl;
-    cout << "Valor actual de la botella 2: " << bottle2.getCurrentValue() << endl;
+    // cout << "Valor actual de la botella 1: " << bottle1.getCurrentValue() << endl;
+    // cout << "Valor actual de la botella 2: " << bottle2.getCurrentValue() << endl;
 
-    if (bottle1.getCurrentValue() == 4)
-    {
-        cout << "Test passed" << endl;
-    }
-    else
-    {
-        cout << "Test failed" << endl;
-    }
+    // if (bottle1.getCurrentValue() == 4)
+    // {
+    //     cout << "Test passed" << endl;
+    // }
+    // else
+    // {
+    //     cout << "Test failed" << endl;
+    // }
 
     /* Se visualiza lo recibido */
     printf("paquete proveniente de : %s\n",inet_ntoa(their_addr.sin_addr));
