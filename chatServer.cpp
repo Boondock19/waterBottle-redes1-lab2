@@ -21,7 +21,8 @@ using namespace std;
 int main(int argc, char *argv[])
 {
 
-    int sockfd; /* descriptor para el socket */
+    int sockfd; /* descriptor para el socket del servidor */
+    int sockClientFd;    /* descriptor para el socket del cliente */
     struct sockaddr_in my_addr; /* direccion IP y numero de puerto local */
     struct sockaddr_in their_addr; /* direccion IP y numero de puerto del cliente */
     /* addr_len contendra el taman~o de la estructura sockadd_in y numbytes el
@@ -29,7 +30,7 @@ int main(int argc, char *argv[])
     int addr_len, numbytes;
     char buf[BUFFER_LEN]; /* Buffer de recepción */
     /* se crea el socket */
-    if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) == -1) {
+    if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
         perror("socket");
         exit(1);
     }
@@ -41,18 +42,38 @@ int main(int argc, char *argv[])
     bzero(&(my_addr.sin_zero), 8); /* rellena con ceros el resto de la estructura */
     /* Se le da un nombre al socket (se lo asocia al puerto e IPs) */
     printf("Asignado direccion al socket ....\n");
-    if (bind(sockfd, (struct sockaddr *)&my_addr, sizeof(struct sockaddr)) == -1) {
-        perror("bind");
+    int statusBind = bind(sockfd,(struct sockaddr *)&my_addr,sizeof(my_addr));
+    if (statusBind < 0) {
+        perror("Error al realizar el bind");
         exit(2);
     }
-    /* Se reciben los datos (directamente, UDP no necesita conexión) */
-    addr_len = sizeof(struct sockaddr);
-    printf("Esperando datos ....\n");
-    if ((numbytes=recvfrom(sockfd, buf, BUFFER_LEN, 0, (struct sockaddr *)&their_addr,
-    (socklen_t *)&addr_len)) == -1) {
-        perror("recvfrom");
-        exit(3);
+    
+    /* Configuramos al servidor/socket para que escuche a solicituces en este caso un maximo de 4 */
+    statusBind = listen(sockfd, 4);
+    if(statusBind < 0) {
+        perror("Error al realizar el listen de solicitudes");
+        exit(2);
     }
+    /* Se reciben los datos */
+    addr_len = sizeof(their_addr);
+    /* Aceptamos las solicitudes o conexiones del cliente */
+    sockClientFd = accept(sockfd, (struct sockaddr *)&their_addr, (socklen_t*)&addr_len);
+    if (sockClientFd < 0) {
+        perror("Error al realizar el accept de solicitudes");
+        exit(2);
+    }
+    printf("Esperando datos ....\n");
+
+    /* Se reciben los datos */
+    read(sockClientFd, buf, BUFFER_LEN);
+    printf("Mensaje recibido: %s\n", buf);
+
+
+    // if ((numbytes=recvfrom(sockfd, buf, BUFFER_LEN, 0, (struct sockaddr *)&their_addr,
+    // (socklen_t *)&addr_len)) == -1) {
+    //     perror("recvfrom");
+    //     exit(3);
+    // }
 
     // cout << "Test de las propiedades de esta clase de WaterBottle" << endl;
     // cout << "Inicializacion de las botellas de agua:" << endl;

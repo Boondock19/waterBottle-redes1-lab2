@@ -44,21 +44,34 @@ int main(int argc, char *argv[])
     printf("Resultado de unir ambas capacidades %s \n", str1 );
   
     /* Creamos el socket */
-    if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) == -1) {
-    perror("socket");
-    exit(2);
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd < 0) {
+        perror("Error al crear el socket");
+        exit(2);
     }
+    int status =0;
     /* a donde mandar */
     their_addr.sin_family = AF_INET; /* usa host byte order */
     their_addr.sin_port = htons(SERVER_PORT); /* usa network byte order */
     their_addr.sin_addr = *((struct in_addr *)he->h_addr);
     bzero(&(their_addr.sin_zero), 8); /* pone en cero el resto */
-    /* enviamos el mensaje */
-    if ((numbytes=sendto(sockfd,str1,strlen(str1),0,(struct sockaddr *)&their_addr,
-    sizeof(struct sockaddr))) == -1) {
-    perror("sendto");
-    exit(2);
+
+    /* Conectamos el cliente al servidor */
+    status = connect(sockfd, (struct sockaddr *)&their_addr, sizeof(their_addr));
+
+    if (status < 0) {
+        perror("Error al conectar el cliente al servidor");
+        exit(2);
     }
+    /* enviamos el mensaje */
+
+    write(sockfd, str1, strlen(str1));
+
+    // if ((numbytes=sendto(sockfd,str1,strlen(str1),0,(struct sockaddr *)&their_addr,
+    // sizeof(struct sockaddr))) == -1) {
+    // perror("sendto");
+    // exit(2);
+    // }
     printf("enviados %d bytes hacia %s\n",numbytes,inet_ntoa(their_addr.sin_addr));
     /* cierro socket */
     close(sockfd);
