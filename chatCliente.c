@@ -16,12 +16,28 @@
 #include <sys/types.h>
 #define SERVER_PORT 4321
 #define BUFFER_LEN 1024
+
+
+void getInfoFromServer(int sockFileDescrytor) {
+    char buffer[BUFFER_LEN];
+    bzero(buffer, BUFFER_LEN);
+    
+    for(;;){
+        read(sockFileDescrytor, buffer, BUFFER_LEN);
+        printf("Respuesta del servidor: %s\n",buffer);
+        if (strncmp(buffer,"end",3) == 0) {
+            printf("El servidor ha cerrado la conexion\n");
+            break;
+        } 
+    }
+   
+}
+
 int main(int argc, char *argv[])
 {
     int sockfd; /* descriptor a usar con el socket */
     struct sockaddr_in their_addr; /* almacenara la direccion IP y numero de puerto del servidor */
     struct hostent *he; /* para obtener nombre del host */
-    int numbytes; /* conteo de bytes a escribir */
     char str1 [10]; /* Variable para enviar al servidor*/
     char str2 [10]; /* variable para tomar el segundo argumento de las botellas */
     if (argc != 4) {
@@ -72,7 +88,10 @@ int main(int argc, char *argv[])
     // perror("sendto");
     // exit(2);
     // }
-    printf("enviados %d bytes hacia %s\n",numbytes,inet_ntoa(their_addr.sin_addr));
+   
+
+
+     getInfoFromServer(sockfd);
     /* cierro socket */
     close(sockfd);
     exit (0);
