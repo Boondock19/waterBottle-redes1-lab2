@@ -18,7 +18,9 @@ public:
 
     void setCapacity(int capacity); 
 
-    void setCurrentValue(int currentValue); 
+    void setCurrentValue(int currentValue);
+
+    char *toString(); 
 };
 
 /*

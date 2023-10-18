@@ -1,4 +1,6 @@
+#include <iostream>
 #include "waterBottle.hpp"
+
 /*
     Redes de computacion I
 
@@ -38,6 +40,13 @@
     void WaterBottle::setCurrentValue(int currentValue)
     {
         CurrentValue = currentValue;
+    }
+
+    char *WaterBottle::toString()
+    {
+        char *str = new char[100];
+        sprintf(str, "(Capacidad: %d, Valor actual: %d)", Capacity, CurrentValue);
+        return str;
     }
 
 

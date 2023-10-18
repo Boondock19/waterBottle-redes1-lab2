@@ -1,10 +1,16 @@
 /*
-* Ejemplo de cliente de chat simple con datagramas (UDP).
-*
-* Leandro Lucarella - Copyleft 2004
-* Basado en diversos ejemplos públicos.
-*
+* 
+* Archivo para crear un socket cliente con protocolo TCP
+* se tomo parte del codigo suministrado de  Leandro Lucarella.
+* 
+*   Redes de computacion I
 
+    José González 15-10627
+    Ana Santos. 17-10602
+    Amaranta Villegas 16-11247
+
+*
+*
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,7 +32,7 @@ void getInfoFromServer(int sockFileDescrytor) {
         read(sockFileDescrytor, buffer, BUFFER_LEN);
         printf("Respuesta del servidor: %s\n",buffer);
         if (strncmp(buffer,"end",3) == 0) {
-            printf("El servidor ha cerrado la conexion\n");
+            printf("El servidor ha cerrado la comunicación\n");
             break;
         } 
     }

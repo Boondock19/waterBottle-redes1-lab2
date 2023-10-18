@@ -1,8 +1,15 @@
 /*
-* Ejemplo de server de chat simple con datagramas (UDP).
+* 
+* Archivo para crear un socket Servidor con protocolo TCP
+* se tomo parte del codigo suministrado de  Leandro Lucarella.
+* 
+*   Redes de computacion I
+
+    José González 15-10627
+    Ana Santos. 17-10602
+    Amaranta Villegas 16-11247
+
 *
-* Leandro Lucarella - Copyleft 2004
-* Basado en otros ejemplos públicos.
 *
 */
 #include <iostream>
@@ -24,14 +31,14 @@ using namespace std;
 
 
 void sendInfo(int sockFileDescrytor, char * message) {
-    printf("Enviando mensaje al cliente ....\n");
+    
     /* Se envian los datos */
-    printf("Este es el mensaje que se envia al cliente: %s\n", message);
+   
     write(sockFileDescrytor, message, BUFFER_LEN);
         
     /*Si el mensaje contiene 'end' entonces apagamos el servidor*/
     if (strncmp("end", message, 3) == 0) {
-        printf("Server Exit...\n");
+        printf("Se cierra la comunicación con el cliente\n");
         close(sockFileDescrytor);
      }
 }
@@ -46,7 +53,7 @@ int main(int argc, char *argv[])
     struct sockaddr_in their_addr; /* direccion IP y numero de puerto del cliente */
     /* addr_len contendra el taman~o de la estructura sockadd_in y numbytes el
     * numero de bytes recibidos */
-    int addr_len, numbytes;
+    int addr_len;
     char buf[BUFFER_LEN]; /* Buffer de recepción */
     /* se crea el socket */
     if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
@@ -81,22 +88,13 @@ int main(int argc, char *argv[])
         perror("Error al realizar el accept de solicitudes");
         exit(2);
     }
+    printf("Se ha establecido la comunicacion con el cliente ....\n");
     printf("Esperando datos ....\n");
 
     /* Se reciben los datos */
     read(sockClientFd, buf, BUFFER_LEN);
     buf[strlen(buf)] = '\0'; // Eliminamos el salto de linea
-    printf("Mensaje recibido: %s\n", buf);
-
-
-    // if ((numbytes=recvfrom(sockfd, buf, BUFFER_LEN, 0, (struct sockaddr *)&their_addr,
-    // (socklen_t *)&addr_len)) == -1) {
-    //     perror("recvfrom");
-    //     exit(3);
-    // }
-
     
-
     // Separar entrada del cliente para poder crear las Botellas
     char str1Splited [10];
     char str2Splited [10];
@@ -115,108 +113,105 @@ int main(int argc, char *argv[])
         pch = strtok (NULL, " ");
         i++;
     }
-    printf("Primera capacidad %d \n", atoi(str1Splited ));
-    printf("Segunda capacidad %d \n", atoi(str2Splited ));
+   
+    
     int firstCapacity = atoi(str1Splited);
     int secondCapacity = atoi(str2Splited);
     char message [BUFFER_LEN_MINUS];
     
-    /* Se envia informacion al cliente */
-    // strcpy(message, "Se recibieron los datos correctamente");
-    // sendInfo(sockClientFd, message);
-    cout << "Test de las propiedades de esta clase de WaterBottle" << endl;
-    cout << "Inicializacion de las botellas de agua:" << endl;
+ 
     WaterBottle bottle1(firstCapacity);
     WaterBottle bottle2(secondCapacity);
 
-    cout << "Capacidad de la botella 1: " << bottle1.getCapacity() << endl;
-    cout << "Capacidad de la botella 2: " << bottle2.getCapacity() << endl;
-
+    
     /* Se envia informacion al cliente */
-    sprintf(message, "Inician ambas botellas vacias: (%d,%d)", bottle1.getCapacity(),bottle2.getCapacity());
+    sprintf(message, "Inician ambas botellas vacias botella 1: %s, botella 2: %s", bottle1.toString(),bottle2.toString());
     sendInfo(sockClientFd, message);
 
 
-    cout << "Vamos a llenar la primera botella para vaciarlo sobre la segunda" << endl;
     /* Se envia informacion al cliente */
-    sprintf(message, "Vamos a llenar la primera botella para vaciarlo sobre la segunda");
+    sprintf(message, "Se llena la botella 1");
     sendInfo(sockClientFd, message);
     bottle1.fill();
 
     /* Se envia informacion al cliente */
-    sprintf(message, "Valor actual de la botella 1: %d",bottle1.getCurrentValue());
+    sprintf(message, "Valor actual de la botella 1: %s",bottle1.toString());
     sendInfo(sockClientFd, message);
     
 /* Se envia informacion al cliente */
-    sprintf(message, "Valor actual de la botella 2: %d",bottle2.getCurrentValue());
+    sprintf(message, "Valor actual de la botella 2: %s",bottle2.toString());
     sendInfo(sockClientFd, message);
     
     fillOtherBottle(bottle1, bottle2);
 
     /* Se envia informacion al cliente */
-    sprintf(message, "Transvasar de la botella 1 a la botella 2:  Primera vez");
+    sprintf(message, "Transvasar de la botella 1 a la botella 2:  ");
     sendInfo(sockClientFd, message);
 
    
     
      /* Se envia informacion al cliente */
-    sprintf(message, "Valor actual de la botella 1: %d",bottle1.getCurrentValue());
+    sprintf(message, "Valor actual de la botella 1: %s",bottle1.toString());
     sendInfo(sockClientFd, message);
     
     
      /* Se envia informacion al cliente */
-    sprintf(message, "Valor actual de la botella 2: %d",bottle2.getCurrentValue());
+    sprintf(message, "Valor actual de la botella 2: %s",bottle2.toString());
     sendInfo(sockClientFd, message);
 
     bottle2.empty();
-    cout << "Vaciamos la botella 2: Primera vez" << endl;
+    
      /* Se envia informacion al cliente */
-    sprintf(message, "Vaciamos la botella 2: Primera vez");
+    sprintf(message, "Vaciamos la botella 2: ");
     sendInfo(sockClientFd, message);
     
      /* Se envia informacion al cliente */
-    sprintf(message, "Valor actual de la botella 1: %d",bottle1.getCurrentValue());
+    sprintf(message, "Valor actual de la botella 1: %s",bottle1.toString());
     sendInfo(sockClientFd, message);
     
      /* Se envia informacion al cliente */
-    sprintf(message, "Valor actual de la botella 2: %d",bottle2.getCurrentValue());
+    sprintf(message, "Valor actual de la botella 2: %s",bottle2.toString());
     sendInfo(sockClientFd, message);
 
-    cout << "Transvasar de la botella 1 a la botella 2: Segunda vez" << endl;
+    
     fillOtherBottle(bottle1, bottle2);
      /* Se envia informacion al cliente */
-    sprintf(message, "Transvasar de la botella 1 a la botella 2:  Segunda vez");
+    sprintf(message, "Transvasar de la botella 1 a la botella 2:  ");
     sendInfo(sockClientFd, message);
      /* Se envia informacion al cliente */
-    sprintf(message, "Valor actual de la botella 1: %d",bottle1.getCurrentValue());
+    sprintf(message, "Valor actual de la botella 1: %s",bottle1.toString());
     sendInfo(sockClientFd, message);
     
      /* Se envia informacion al cliente */
-    sprintf(message, "Valor actual de la botella 2: %d",bottle2.getCurrentValue());
+    sprintf(message, "Valor actual de la botella 2: %s",bottle2.toString());
     sendInfo(sockClientFd, message);
 
-    cout << "Llenamos la botella 1: Segunda vez" << endl;
+    /* Se envia informacion al cliente */
+    
+    sprintf(message, "Llenamos la botella 1 ");
+    sendInfo(sockClientFd, message);
+    
     bottle1.fill();
-     /* Se envia informacion al cliente */
-    sprintf(message, "Valor actual de la botella 1: %d",bottle1.getCurrentValue());
+     
+    sprintf(message, "Valor actual de la botella 1: %s",bottle1.toString());
     sendInfo(sockClientFd, message);
     
      /* Se envia informacion al cliente */
-    sprintf(message, "Valor actual de la botella 2: %d",bottle2.getCurrentValue());
+    sprintf(message, "Valor actual de la botella 2: %s",bottle2.toString());
     sendInfo(sockClientFd, message);
 
      /* Se envia informacion al cliente */
-    sprintf(message, "Transvasar de la botella 1 a la botella 2:  Tercera vez");
+    sprintf(message, "Transvasar de la botella 1 a la botella 2 ");
     sendInfo(sockClientFd, message);
     fillOtherBottle(bottle1, bottle2);
 
 
    /* Se envia informacion al cliente */
-    sprintf(message, "Valor actual de la botella 1: %d",bottle1.getCurrentValue());
+    sprintf(message, "Valor actual de la botella 1: %s",bottle1.toString());
     sendInfo(sockClientFd, message);
     
      /* Se envia informacion al cliente */
-    sprintf(message, "Valor actual de la botella 2: %d",bottle2.getCurrentValue());
+    sprintf(message, "Valor actual de la botella 2: %s",bottle2.toString());
     sendInfo(sockClientFd, message);
 
     if (bottle1.getCurrentValue() == 4)
@@ -240,11 +235,6 @@ int main(int argc, char *argv[])
         sendInfo(sockClientFd, message);
     }
 
-    /* Se visualiza lo recibido */
-    printf("paquete proveniente de : %s\n",inet_ntoa(their_addr.sin_addr));
-    printf("longitud del paquete en bytes: %d\n",numbytes);
-    buf[numbytes] = '\0';
-    printf("el paquete contiene: %s\n", buf);
     /* cerramos descriptor del socket */
     close(sockfd);
     exit (0);
