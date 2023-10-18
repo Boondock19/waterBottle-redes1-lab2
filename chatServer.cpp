@@ -66,6 +66,7 @@ int main(int argc, char *argv[])
 
     /* Se reciben los datos */
     read(sockClientFd, buf, BUFFER_LEN);
+    buf[strlen(buf)] = '\0'; // Eliminamos el salto de linea
     printf("Mensaje recibido: %s\n", buf);
 
 
