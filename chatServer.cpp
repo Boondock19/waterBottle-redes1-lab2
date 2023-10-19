@@ -28,7 +28,8 @@
 using namespace std;
 
 
-
+/*Procedimiento para enviar la información al cliente en el socket y
+verificar cuando se ha cerrado la comunicación en el servidor*/
 
 void sendInfo(int sockFileDescrytor, char * message) {
     
@@ -125,12 +126,12 @@ int main(int argc, char *argv[])
 
     
     /* Se envia informacion al cliente */
-    sprintf(message, "Inician ambas botellas vacias botella 1: %s, botella 2: %s", bottle1.toString(),bottle2.toString());
+    sprintf(message, "INICIANDO botella 1: %s, botella 2: %s", bottle1.toString(),bottle2.toString());
     sendInfo(sockClientFd, message);
 
 
-    /* Se envia informacion al cliente */
-    sprintf(message, "Se llena la botella 1");
+   /* Se envia informacion al cliente */
+    sprintf(message, "LLENAR la botella 1");
     sendInfo(sockClientFd, message);
     bottle1.fill();
 
@@ -139,13 +140,13 @@ int main(int argc, char *argv[])
     sendInfo(sockClientFd, message);
     
 /* Se envia informacion al cliente */
-    sprintf(message, "Valor actual de la botella 2: %s",bottle2.toString());
+    sprintf(message, "Valor actual de la botella 2: %s\n",bottle2.toString());
     sendInfo(sockClientFd, message);
     
     fillOtherBottle(bottle1, bottle2);
 
     /* Se envia informacion al cliente */
-    sprintf(message, "Transvasar de la botella 1 a la botella 2:  ");
+    sprintf(message, "TRASVASAR DE la botella 1 A la botella 2");
     sendInfo(sockClientFd, message);
 
    
@@ -156,13 +157,13 @@ int main(int argc, char *argv[])
     
     
      /* Se envia informacion al cliente */
-    sprintf(message, "Valor actual de la botella 2: %s",bottle2.toString());
+    sprintf(message, "Valor actual de la botella 2: %s\n",bottle2.toString());
     sendInfo(sockClientFd, message);
 
     bottle2.empty();
     
      /* Se envia informacion al cliente */
-    sprintf(message, "Vaciamos la botella 2: ");
+    sprintf(message, "VACIAR la botella 2");
     sendInfo(sockClientFd, message);
     
      /* Se envia informacion al cliente */
@@ -170,25 +171,25 @@ int main(int argc, char *argv[])
     sendInfo(sockClientFd, message);
     
      /* Se envia informacion al cliente */
-    sprintf(message, "Valor actual de la botella 2: %s",bottle2.toString());
+    sprintf(message, "Valor actual de la botella 2: %s\n",bottle2.toString());
     sendInfo(sockClientFd, message);
 
     
     fillOtherBottle(bottle1, bottle2);
      /* Se envia informacion al cliente */
-    sprintf(message, "Transvasar de la botella 1 a la botella 2:  ");
+    sprintf(message, "TRASVASAR DE la botella 1 A la botella 2");
     sendInfo(sockClientFd, message);
      /* Se envia informacion al cliente */
     sprintf(message, "Valor actual de la botella 1: %s",bottle1.toString());
     sendInfo(sockClientFd, message);
     
      /* Se envia informacion al cliente */
-    sprintf(message, "Valor actual de la botella 2: %s",bottle2.toString());
+    sprintf(message, "Valor actual de la botella 2: %s\n",bottle2.toString());
     sendInfo(sockClientFd, message);
 
     /* Se envia informacion al cliente */
     
-    sprintf(message, "Llenamos la botella 1 ");
+    sprintf(message, "LLENAR la botella 1 ");
     sendInfo(sockClientFd, message);
     
     bottle1.fill();
@@ -197,11 +198,11 @@ int main(int argc, char *argv[])
     sendInfo(sockClientFd, message);
     
      /* Se envia informacion al cliente */
-    sprintf(message, "Valor actual de la botella 2: %s",bottle2.toString());
+    sprintf(message, "Valor actual de la botella 2: %s\n",bottle2.toString());
     sendInfo(sockClientFd, message);
 
      /* Se envia informacion al cliente */
-    sprintf(message, "Transvasar de la botella 1 a la botella 2 ");
+    sprintf(message, "TRASVASAR DE la botella 1 A la botella 2 ");
     sendInfo(sockClientFd, message);
     fillOtherBottle(bottle1, bottle2);
 
@@ -211,14 +212,14 @@ int main(int argc, char *argv[])
     sendInfo(sockClientFd, message);
     
      /* Se envia informacion al cliente */
-    sprintf(message, "Valor actual de la botella 2: %s",bottle2.toString());
+    sprintf(message, "Valor actual de la botella 2: %s\n",bottle2.toString());
     sendInfo(sockClientFd, message);
 
     if (bottle1.getCurrentValue() == 4)
     {
         
         /* Se envia informacion al cliente */
-        sprintf(message, "Test passed");
+        sprintf(message, "TEST PASSED");
         sendInfo(sockClientFd, message);
         /* Se envia informacion al cliente */
         sprintf(message, "end");
@@ -228,7 +229,7 @@ int main(int argc, char *argv[])
     {
         
         /* Se envia informacion al cliente */
-        sprintf(message, "Test failed");
+        sprintf(message, "TEST FAILED");
         sendInfo(sockClientFd, message);
         /* Se envia informacion al cliente */
         sprintf(message, "end");
