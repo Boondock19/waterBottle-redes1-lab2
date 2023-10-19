@@ -23,6 +23,8 @@
 #define SERVER_PORT 4321
 #define BUFFER_LEN 1024
 
+/*Procedimiento para obtener el mensaje del servidor y que el cliente siga
+escuchando mientras el servidor mantega viva la comunicación*/
 
 void getInfoFromServer(int sockFileDescrytor) {
     char buffer[BUFFER_LEN];
@@ -52,8 +54,8 @@ int main(int argc, char *argv[])
     }
     /* convertimos el hostname a su direccion IP */
     if ((he=gethostbyname(argv[1])) == NULL) {
-    perror("gethostbyname");
-    exit(1);
+        perror("gethostbyname");
+        exit(1);
     }
     // logica para poder procesar los argumentos de las botellas para enviarlo al servidor
    
